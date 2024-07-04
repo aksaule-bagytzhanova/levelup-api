@@ -258,3 +258,5 @@ CORS_ALLOW_HEADERS = [
 REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'apps.users.serializers.CustomUserDetailsSerializer',
 }
+
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')

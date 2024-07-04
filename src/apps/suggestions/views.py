@@ -34,7 +34,7 @@ class SuggestionViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def saved(self, request):
-        queryset = self.queryset.filter(is_saved=True)
+        queryset = self.get_queryset().filter(is_saved=True)
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
