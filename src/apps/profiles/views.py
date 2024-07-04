@@ -23,13 +23,18 @@ class ProfileViewSet(viewsets.ViewSet):
 
     def update(self, request, pk=None):
         profile = self.get_object()
-        serializer = ProfileUpdateSerializer(profile, data=request.data)
+        serializer = ProfileUpdateSerializer(profile, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         profile = serializer.save()
-        
         return Response(ProfileSerializer(profile).data)
 
     @action(detail=False, methods=['get'])
     def genders(self, request):
         gender_choices = Profile.GenderChoices.choices
         return Response(gender_choices)
+
+    @action(detail=False, methods=['get'])
+    def targets(self, request):
+        target_choices = Profile.TargetChoices.choices
+        return Response(target_choices)
+    

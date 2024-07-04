@@ -5,9 +5,7 @@ class Suggestion(models.Model):
     TYPE_CHOICES = [
         ('nutritionist', 'Nutritionist Doctor'),
         ('dietitian', 'Dietitian Doctor'),
-        ('acupuncturists', 'Acupuncturists Doctor'),
-        ('homeopaths', 'Homeopaths Doctor'),
-        ('naturopaths', 'Naturopaths Doctor')
+        ('fitness', 'Fitness Instructor'),
     ]
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
