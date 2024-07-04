@@ -162,12 +162,16 @@ REST_FRAMEWORK = {
     ),
 }
 
+AUTH_USER_MODEL = 'users.CustomUser'
+
+
 # Настройки Django Allauth
-ACCOUNT_AUTHENTICATION_METHOD = 'username'
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
-ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 
 ACCOUNT_RATE_LIMITS = {
     "login_failed": "5/300s"  # 5 попыток за 300 секунд
@@ -223,6 +227,7 @@ SIMPLE_JWT = {
 REST_AUTH = {
     'USE_JWT': True,
     'TOKEN_MODEL': None,  # Отключает использование модели токенов
+    'REGISTER_SERIALIZER': 'apps.users.serializers.CustomRegisterSerializer'
 }
 
 # Настройка CORS
@@ -247,3 +252,8 @@ CORS_ALLOW_HEADERS = [
     "x-csrftoken",
     "x-requested-with",
 ]
+
+# Django Rest Framework
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'apps.users.serializers.CustomUserDetailsSerializer',
+}

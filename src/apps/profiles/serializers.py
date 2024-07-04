@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
 from apps.profiles.models import Profile
-from apps.users.serializers import UserSerializer
 
 class ProfileSerializer(serializers.ModelSerializer):
     # user = UserSerializer(read_only=True)
