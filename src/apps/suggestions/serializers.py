@@ -51,8 +51,25 @@ class SuggestionCreateSerializer(serializers.ModelSerializer):
             },
         )
 
+        generated_text = ""
         if response.status_code == 200:
-            generated_text = response.json().get('text', '').strip()
+            candidates = response.json().get('candidates', [])
+            if len(candidates) == 0:
+                return generated_text
+            
+            content = candidates[0].get('content', {})
+            if 'parts' not in content:
+                return generated_text
+            
+            parts = content.get('parts', [])
+            if len(parts) == 0:
+                return generated_text
+            
+            part = parts[0]
+            if 'text' not in part:
+                return generated_text
+            
+            generated_text = part.get('text')
         else:
             generated_text = "Ошибка при генерации текста через Gemini."
 
