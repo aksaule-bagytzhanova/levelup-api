@@ -12,7 +12,6 @@ class ChatGPTRequestTemplate:
                     f"Аллергии: {profile.allergy if profile.allergy else 'Нет'}\n"
         elif suggestion_type == 'dietitian':
             prompt = f"Создай детальный план питания для достижения моего идеального веса. Вот мои данные:\n" \
-                    f"Имя: {profile.user.username}\n" \
                     f"Пол: {profile.get_gender_display()}\n" \
                     f"Возраст: {profile.get_age()}\n" \
                     f"Вес: {profile.weight} кг\n" \
@@ -22,7 +21,6 @@ class ChatGPTRequestTemplate:
                     f"Аллергии: {profile.allergy if profile.allergy else 'Нет'}\n"
         elif suggestion_type == 'fitness':
             prompt = f"Предложи план фитнес тренировок для достижения моих целей. Вот мои данные:\n" \
-                    f"Имя: {profile.user.username}\n" \
                     f"Пол: {profile.get_gender_display()}\n" \
                     f"Возраст: {profile.get_age()}\n" \
                     f"Вес: {profile.weight} кг\n" \
