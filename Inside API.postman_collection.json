@@ -1,0 +1,594 @@
+{
+	"info": {
+		"_postman_id": "9f987435-64b5-4e13-b241-1f5f5ca6ad94",
+		"name": "Inside API",
+		"description": "Postman collection for Inside API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20625981"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Получаем ответ\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"// Проверяем, что ответ содержит токен\r",
+									"if (responseJson.access) {\r",
+									"    pm.collectionVariables.set(\"auth_token\", responseJson.access);\r",
+									"}\r",
+									"\r",
+									"// Проверяем, что ответ содержит токен\r",
+									"if (responseJson.refresh) {\r",
+									"    pm.collectionVariables.set(\"refresh_token\", responseJson.refresh);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"test2\",\n    \"email\": \"youremail@example.com\",\n    \"password1\": \"yourpassword2\",\n    \"password2\": \"yourpassword2\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/registration/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"registration",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/auth/user/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Получаем ответ\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"// Проверяем, что ответ содержит токен\r",
+									"if (responseJson.access) {\r",
+									"    pm.collectionVariables.set(\"auth_token\", responseJson.access);\r",
+									"}\r",
+									"\r",
+									"// Проверяем, что ответ содержит токен\r",
+									"if (responseJson.refresh) {\r",
+									"    pm.collectionVariables.set(\"refresh_token\", responseJson.refresh);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    // \"username\": \"admin\",\n    // \"password\": \"admin\"\n\n    \"username\": \"test1\",\n    \"password\": \"yourpassword1\"\n\n    // \"username\": \"admin\",\n    // \"password\": \"admin\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/token/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"token",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Получаем ответ\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"// Проверяем, что ответ содержит токен\r",
+									"if (responseJson.access) {\r",
+									"    pm.collectionVariables.set(\"auth_token\", responseJson.access);\r",
+									"}\r",
+									"\r",
+									"// Проверяем, что ответ содержит токен\r",
+									"if (responseJson.refresh) {\r",
+									"    pm.collectionVariables.set(\"refresh_token\", responseJson.refresh);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"refresh\": \"{{refresh_token}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/token/refresh/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"token",
+								"refresh",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login with google",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"access_token\": \"{{google_token}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/google/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"google",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "Get Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/profile/retrieve",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"retrieve"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "date_of_birth",
+									"value": "1990-01-01",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "M",
+									"type": "text"
+								},
+								{
+									"key": "weight",
+									"value": "70",
+									"type": "text"
+								},
+								{
+									"key": "height",
+									"value": "175",
+									"type": "text"
+								},
+								{
+									"key": "allergy",
+									"value": "Нет",
+									"type": "text"
+								},
+								{
+									"key": "blood_test_photo",
+									"type": "file",
+									"src": "/C:/Users/sulta/Downloads/fullgodev.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/profile/update/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"update",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Genders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/profile/genders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"genders"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Suggestions",
+			"item": [
+				{
+					"name": "Create Suggestion",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"acupuncturists\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/suggestions/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"suggestions",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Suggestions",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/suggestions?type=acupuncturists",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"suggestions"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "acupuncturists"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Save Suggestion",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/suggestions/37/save_suggestion/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"suggestions",
+								"37",
+								"save_suggestion",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Saved Suggestions",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/suggestions/saved?type=acupuncturists",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"suggestions",
+								"saved"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "acupuncturists"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get types",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/suggestions/types",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"suggestions",
+								"types"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:8001"
+		},
+		{
+			"key": "auth_token",
+			"value": ""
+		},
+		{
+			"key": "refresh_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "google_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

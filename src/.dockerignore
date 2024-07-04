@@ -1,0 +1,13 @@
+__pycache__
+*.pyo
+*.log
+*.sql
+*.sqlite3
+*.db
+*.git
+*.egg-info
+dist
+build
+*.egg
+photos
+media
