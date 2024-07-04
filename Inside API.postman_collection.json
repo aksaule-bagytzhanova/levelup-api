@@ -46,7 +46,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"test2\",\n    \"email\": \"youremail@example.com\",\n    \"password1\": \"yourpassword2\",\n    \"password2\": \"yourpassword2\"\n}"
+							"raw": "{\n    \"email\": \"youremail3@example.com\",\n    \"password1\": \"yourpassword2\",\n    \"password2\": \"yourpassword2\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/auth/registration/",
@@ -129,7 +129,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    // \"username\": \"admin\",\n    // \"password\": \"admin\"\n\n    \"username\": \"test1\",\n    \"password\": \"yourpassword1\"\n\n    // \"username\": \"admin\",\n    // \"password\": \"admin\"\n}"
+							"raw": "{\n    \"email\": \"youremail3@example.com\",\n    \"password\": \"yourpassword2\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/token/",
@@ -271,7 +271,124 @@
 					"response": []
 				},
 				{
-					"name": "Update Profile",
+					"name": "Update Profile First",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"date_of_birth\": \"1990-01-01\",\r\n    \"gender\": \"M\",\r\n    \"weight\": 70,\r\n    \"height\": 170,\r\n    \"ideal_weight\": 80\r\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/profile/update/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"update",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile Second",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"target\": \"LW\"\r\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/profile/update/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"update",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile Third",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"allergy\": \"Нет аллергии\"\r\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/profile/update/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"update",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile Fourth",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -294,34 +411,9 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "date_of_birth",
-									"value": "1990-01-01",
-									"type": "text"
-								},
-								{
-									"key": "gender",
-									"value": "M",
-									"type": "text"
-								},
-								{
-									"key": "weight",
-									"value": "70",
-									"type": "text"
-								},
-								{
-									"key": "height",
-									"value": "175",
-									"type": "text"
-								},
-								{
-									"key": "allergy",
-									"value": "Нет",
-									"type": "text"
-								},
-								{
 									"key": "blood_test_photo",
 									"type": "file",
-									"src": "/C:/Users/sulta/Downloads/fullgodev.png"
+									"src": "/C:/Users/sulta/Downloads/golanggg.png"
 								}
 							]
 						},
@@ -368,6 +460,35 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get Targets",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/profile/targets",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"targets"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -396,7 +517,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"type\": \"acupuncturists\"\n}"
+							"raw": "{\n    \"type\": \"nutritionist\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/suggestions/",
@@ -428,7 +549,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/suggestions?type=acupuncturists",
+							"raw": "{{base_url}}/api/suggestions?type=nutritionist",
 							"host": [
 								"{{base_url}}"
 							],
@@ -439,7 +560,7 @@
 							"query": [
 								{
 									"key": "type",
-									"value": "acupuncturists"
+									"value": "nutritionist"
 								}
 							]
 						}
@@ -467,14 +588,14 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/suggestions/37/save_suggestion/",
+							"raw": "{{base_url}}/api/suggestions/1/save_suggestion/",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"api",
 								"suggestions",
-								"37",
+								"1",
 								"save_suggestion",
 								""
 							]
@@ -589,6 +710,12 @@
 			"key": "google_token",
 			"value": "",
 			"type": "string"
+		},
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:8001",
+			"type": "string",
+			"disabled": true
 		}
 	]
 }
