@@ -6,4 +6,3 @@ from . import models
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'weight', 'height', 'date_of_birth',)
     list_filter = ('user', )
-    search_fields = ('user__username', )
