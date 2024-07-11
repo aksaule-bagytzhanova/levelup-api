@@ -27,7 +27,7 @@ class Profile(models.Model):
     blood_test_info = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return self.user.username
+        return str(self.user)
     
     def get_age(self):
         if self.date_of_birth:
