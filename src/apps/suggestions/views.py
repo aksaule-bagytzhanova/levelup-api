@@ -4,8 +4,8 @@ from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .models import Suggestion
-from .serializers import SuggestionSerializer, SuggestionCreateSerializer, SuggestionSaveSerializer
+from .models import Suggestion, Recommendation
+from .serializers import SuggestionSerializer, SuggestionCreateSerializer, SuggestionSaveSerializer, RecommendationSerializer, RecommendationCreateSerializer
 
 class SuggestionViewSet(viewsets.ModelViewSet):
     queryset = Suggestion.objects.all()
@@ -50,3 +50,24 @@ class SuggestionViewSet(viewsets.ModelViewSet):
     def types(self, request):
         type_choices = Suggestion.TYPE_CHOICES
         return Response(type_choices)
+
+
+class RecommendationViewSet(viewsets.ModelViewSet):
+    queryset = Recommendation.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return RecommendationCreateSerializer
+        return RecommendationSerializer
+
+    def get_queryset(self):
+        queryset = Recommendation.objects.filter(profile__user=self.request.user).order_by('-created_at')
+        return queryset
+    
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        suggestion = serializer.save()
+        output_serializer = RecommendationSerializer(suggestion)
+        return Response(output_serializer.data, status=status.HTTP_201_CREATED)

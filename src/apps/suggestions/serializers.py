@@ -1,10 +1,11 @@
+import json
 from django.conf import settings
 import requests
 from rest_framework import serializers
 from openai import OpenAI
 
-from .models import Suggestion
-from apps.suggestions.prompt import ChatGPTRequestTemplate
+from .models import Suggestion, Recommendation, Food
+from apps.suggestions.prompt import ChatGPTRequestTemplate, ChatGPTRecommendationRequestTemplate
 
 class SuggestionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -93,3 +94,82 @@ class SuggestionSaveSerializer(serializers.ModelSerializer):
     class Meta:
         model = Suggestion
         fields = ['is_saved']
+
+
+class FoodSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Food
+        fields = '__all__'
+
+
+class RecommendationSerializer(serializers.ModelSerializer):
+    breakfast = FoodSerializer(read_only=True)
+    lunch = FoodSerializer(read_only=True)
+    dinner = FoodSerializer(read_only=True)
+
+    class Meta:
+        model = Recommendation
+        fields = ['id', 'profile', 'created_at', 'breakfast', 'lunch', 'dinner']
+
+
+class RecommendationCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Recommendation
+        fields = []
+
+    def create(self, validated_data):
+        profile = self.context['request'].user.profile
+        data = self.generate_data(profile)
+        
+        # Создаем объекты Food для каждого приема пищи
+        breakfast = Food.objects.create(
+            title=data['breakfast']['title'],
+            description=data['breakfast']['description'],
+            recipe=data['breakfast']['recipe']
+        )
+
+        lunch = Food.objects.create(
+            title=data['lunch']['title'],
+            description=data['lunch']['description'],
+            recipe=data['lunch']['recipe']
+        )
+
+        dinner = Food.objects.create(
+            title=data['dinner']['title'],
+            description=data['dinner']['description'],
+            recipe=data['dinner']['recipe']
+        )
+
+        # Создаем объект Recommendation, связывая его с профилем и блюдами
+        recommendation = Recommendation.objects.create(
+            profile=profile,
+            breakfast=breakfast,
+            lunch=lunch,
+            dinner=dinner
+        )
+        return recommendation
+
+    def generate_data(self, profile, suggestion_type):
+        # Формируем запрос на основе типа рекомендации
+        prompt = ChatGPTRecommendationRequestTemplate.generate_request(profile, suggestion_type)
+
+        # Генерация текста через ChatGPT
+        generated_text = self.generate_gatgpt_text(prompt)
+        generated_text = generated_text.replace("'", '"')
+
+        data = json.loads(generated_text)
+
+        return data
+
+    def generate_gatgpt_text(self, prompt):
+        # Отправляем запрос к ChatGPT API
+        client = OpenAI(api_key=settings.OPENAI_API_KEY)
+        completion = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "user", "content": prompt}
+            ]
+        )
+
+        generated_text = completion.choices[0].message.content
+        return generated_text
