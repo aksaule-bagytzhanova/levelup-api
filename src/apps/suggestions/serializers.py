@@ -149,9 +149,9 @@ class RecommendationCreateSerializer(serializers.ModelSerializer):
         )
         return recommendation
 
-    def generate_data(self, profile, suggestion_type):
+    def generate_data(self, profile):
         # Формируем запрос на основе типа рекомендации
-        prompt = ChatGPTRecommendationRequestTemplate.generate_request(profile, suggestion_type)
+        prompt = ChatGPTRecommendationRequestTemplate.generate_request(profile)
 
         # Генерация текста через ChatGPT
         generated_text = self.generate_gatgpt_text(prompt)

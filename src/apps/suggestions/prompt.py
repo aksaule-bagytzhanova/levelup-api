@@ -37,7 +37,7 @@ class ChatGPTRequestTemplate:
 
 class ChatGPTRecommendationRequestTemplate:
     @staticmethod
-    def generate_request(profile, suggestion_type):
+    def generate_request(profile):
         prompt = f"Сделай мне план питания от нутрициолога:" \
                 f"Вот мои данные:" \
                 f"дата рождения: {profile.date_of_birth}" \
