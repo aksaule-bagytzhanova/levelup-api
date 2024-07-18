@@ -88,7 +88,7 @@ class StarViewSet(viewsets.ModelViewSet):
     def sports(self, request, pk=None):
         star = self.get_object()
         sports = StarSport.objects.filter(star=star)
-        serializer = StarSportSerializer(sports, many=True)
+        serializer = StarSportSerializer(sports, many=True, context={'request': request})
         return Response(serializer.data)
 
 class StarFoodViewSet(viewsets.ModelViewSet):
