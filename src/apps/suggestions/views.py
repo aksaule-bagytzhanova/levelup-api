@@ -4,8 +4,8 @@ from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .models import Suggestion, Recommendation
-from .serializers import SuggestionSerializer, SuggestionCreateSerializer, SuggestionSaveSerializer, RecommendationSerializer, RecommendationCreateSerializer
+from .models import Star, StarFood, StarSport, Suggestion, Recommendation
+from .serializers import StarFoodSerializer, StarSerializer, StarSportSerializer, SuggestionSerializer, SuggestionCreateSerializer, SuggestionSaveSerializer, RecommendationSerializer, RecommendationCreateSerializer
 
 class SuggestionViewSet(viewsets.ModelViewSet):
     queryset = Suggestion.objects.all()
@@ -71,3 +71,30 @@ class RecommendationViewSet(viewsets.ModelViewSet):
         suggestion = serializer.save()
         output_serializer = RecommendationSerializer(suggestion)
         return Response(output_serializer.data, status=status.HTTP_201_CREATED)
+
+
+class StarViewSet(viewsets.ModelViewSet):
+    queryset = Star.objects.all()
+    serializer_class = StarSerializer
+
+    @action(detail=True, methods=['get'])
+    def foods(self, request, pk=None):
+        star = self.get_object()
+        foods = StarFood.objects.filter(star=star).select_related('breakfast', 'lunch', 'dinner')
+        serializer = StarFoodSerializer(foods, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def sports(self, request, pk=None):
+        star = self.get_object()
+        sports = StarSport.objects.filter(star=star)
+        serializer = StarSportSerializer(sports, many=True)
+        return Response(serializer.data)
+
+class StarFoodViewSet(viewsets.ModelViewSet):
+    queryset = StarFood.objects.all()
+    serializer_class = StarFoodSerializer
+
+class StarSportViewSet(viewsets.ModelViewSet):
+    queryset = StarSport.objects.all()
+    serializer_class = StarSportSerializer

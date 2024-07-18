@@ -4,7 +4,7 @@ import requests
 from rest_framework import serializers
 from openai import OpenAI
 
-from .models import Suggestion, Recommendation, Food
+from .models import Star, StarFood, StarSport, Suggestion, Recommendation, Food
 from apps.suggestions.prompt import ChatGPTRequestTemplate, ChatGPTRecommendationRequestTemplate
 
 class SuggestionSerializer(serializers.ModelSerializer):
@@ -173,3 +173,23 @@ class RecommendationCreateSerializer(serializers.ModelSerializer):
 
         generated_text = completion.choices[0].message.content
         return generated_text
+
+
+class StarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Star
+        fields = '__all__'
+
+class StarFoodSerializer(serializers.ModelSerializer):
+    breakfast = FoodSerializer(read_only=True)
+    lunch = FoodSerializer(read_only=True)
+    dinner = FoodSerializer(read_only=True)
+
+    class Meta:
+        model = StarFood
+        fields = '__all__'
+
+class StarSportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StarSport
+        fields = '__all__'
