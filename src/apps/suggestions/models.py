@@ -35,3 +35,41 @@ class Recommendation(models.Model):
 
     def __str__(self):
         return f"Recommendation for {str(self.profile)}"
+
+
+class Star(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+    avatar = models.ImageField(upload_to='stars/')
+    description = models.TextField()
+
+    def __str__(self) -> str:
+        return self.name
+
+
+class StarFood(models.Model):
+    star = models.ForeignKey(Star, on_delete=models.CASCADE)
+    breakfast = models.OneToOneField(Food, on_delete=models.CASCADE, related_name='breakfast_stars')
+    lunch = models.OneToOneField(Food, on_delete=models.CASCADE, related_name='lunch_stars')
+    dinner = models.OneToOneField(Food, on_delete=models.CASCADE, related_name='dinner_stars')
+
+    def __str__(self) -> str:
+        return f"{self.star.name} - {self.breakfast.title}"
+
+
+class StarSport(models.Model):
+    class FitnessBodyPartChoices(models.TextChoices):
+        HAND = 'hand', 'Hand'
+        LEG = 'leg', 'Leg'
+        BACK = 'back', 'Back'
+        CHEST = 'chest', 'Chest'
+        ASS = 'ass', 'Ass'
+
+    star = models.ForeignKey(Star, on_delete=models.CASCADE)
+    fitness_body_part_type = models.CharField(max_length=52, choices=FitnessBodyPartChoices.choices)
+    title = models.CharField(max_length=200)
+    photo = models.ImageField(upload_to='sports/')
+    description = models.TextField()
+    video_url = models.URLField()
+
+    def __str__(self) -> str:
+        return f"{self.star.name} - {self.fitness_body_part_type} - {self.title}"

@@ -19,3 +19,22 @@ class FoodAdmin(admin.ModelAdmin):
 class RecommendationAdmin(admin.ModelAdmin):
     list_display = ('id', 'created_at', 'profile', )
     list_filter = ('profile', )
+
+
+@admin.register(models.Star)
+class StarAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
+    list_filter = ('name',)
+
+@admin.register(models.StarFood)
+class StarFoodAdmin(admin.ModelAdmin):
+    list_display = ('star', 'breakfast', 'lunch', 'dinner')
+    search_fields = ('star__name', 'breakfast__title', 'lunch__title', 'dinner__title')
+    list_filter = ('star__name',)
+
+@admin.register(models.StarSport)
+class StarSportAdmin(admin.ModelAdmin):
+    list_display = ('star', 'fitness_body_part_type', 'title')
+    search_fields = ('star__name', 'title', 'fitness_body_part_type')
+    list_filter = ('star__name', 'fitness_body_part_type')
