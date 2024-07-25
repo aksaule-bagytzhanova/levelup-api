@@ -14,7 +14,7 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ['date_of_birth', 'gender', 'weight', 'height', 'ideal_weight', 'target', 'allergy', 'blood_test_photo']
+        fields = ['date_of_birth', 'gender', 'weight', 'height', 'ideal_weight', 'target', 'allergy', 'blood_test_photo', 'injuries', 'time_limit']
 
     def update(self, instance, validated_data):
         for attr, value in validated_data.items():
