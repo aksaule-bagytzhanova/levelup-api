@@ -38,3 +38,9 @@ class StarSportAdmin(admin.ModelAdmin):
     list_display = ('star', 'fitness_body_part_type', 'title')
     search_fields = ('star__name', 'title', 'fitness_body_part_type')
     list_filter = ('star__name', 'fitness_body_part_type')
+
+@admin.register(models.ProfileSport)
+class ProfileSportAdmin(admin.ModelAdmin):
+    list_display = ('profile', 'fitness_body_part_type', 'title')
+    search_fields = ('title', 'fitness_body_part_type')
+    list_filter = ('profile', 'fitness_body_part_type')

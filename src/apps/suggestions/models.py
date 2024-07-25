@@ -55,15 +55,15 @@ class StarFood(models.Model):
     def __str__(self) -> str:
         return f"{self.star.name} - {self.breakfast.title}"
 
-
-class StarSport(models.Model):
-    class FitnessBodyPartChoices(models.TextChoices):
+class FitnessBodyPartChoices(models.TextChoices):
         HAND = 'hand', 'Hand'
         LEG = 'leg', 'Leg'
         BACK = 'back', 'Back'
         CHEST = 'chest', 'Chest'
-        ASS = 'ass', 'Ass'
+        PRESS = 'press', 'Press'
 
+
+class StarSport(models.Model):
     star = models.ForeignKey(Star, on_delete=models.CASCADE)
     fitness_body_part_type = models.CharField(max_length=52, choices=FitnessBodyPartChoices.choices)
     title = models.CharField(max_length=200)
@@ -73,3 +73,16 @@ class StarSport(models.Model):
 
     def __str__(self) -> str:
         return f"{self.star.name} - {self.fitness_body_part_type} - {self.title}"
+
+
+class ProfileSport(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    fitness_body_part_type = models.CharField(max_length=52, choices=FitnessBodyPartChoices.choices)
+    title = models.CharField(max_length=200)
+    photo = models.ImageField(upload_to='profile_sports/')
+    description = models.TextField()
+    video_url = models.URLField()
+
+    def __str__(self) -> str:
+        return f"{str(self.profile)} - {self.fitness_body_part_type} - {self.title}"
