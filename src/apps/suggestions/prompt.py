@@ -50,3 +50,23 @@ class ChatGPTRecommendationRequestTemplate:
                 "{'breakfast': {'title': 'тут название','description': 'тут инфо про калории\n жиры\n белок\n углеводы','recipe': 'тут инфо про состав с заголовками и рецепт учитывай количество и пиши на разные линии'},'lunch': {'title': 'тут название','description': 'тут инфо про калории\n жиры\n белок\n углеводы','recipe': 'тут инфо про состав с заголовками и рецепт учитывай количество и пиши на разные линии'},'dinner': {'title': 'тут название','description': 'тут инфо про калории\n жиры\n белок\n углеводы','recipe': 'тут инфо про состав с заголовками и рецепт учитывай количество и пиши на разные линии'}}"
 
         return prompt
+
+
+class ChatGPTProfileSportRequestTemplate:
+    @staticmethod
+    def generate_request(profile):
+        prompt = f"Сделай мне список тренировок от фитнес инструктора:" \
+                f"Вот мои данные:" \
+                f"дата рождения: {profile.date_of_birth}" \
+                f"рост: {profile.height}" \
+                f"вес: {profile.weight}" \
+                f"цель веса: {profile.ideal_weight}" \
+                f"цель: {profile.get_target_display()}" \
+                f"аллергии: {profile.allergy if profile.allergy else 'Нет'}" \
+                f"мои травмы: {profile.injuries if profile.injuries else 'Нет'}" \
+                f"хочу добиться за срок: {profile.get_time_limit_display}." \
+                f"по каждому типу нужно 3 упражений." \
+                f"ответь строго в таком формате без других слов:" \
+                "{'back': [{'title': 'тут название', 'description': 'тут описание'}],'hand': [{'title': 'тут название', 'description': 'тут описание'}], 'leg': [{'title': 'тут название', 'description': 'тут описание'}], 'chest': [{'title': 'тут название', 'description': 'тут описание'}], 'press': [{'title': 'тут название', 'description': 'тут описание'}], 'chest': [{'title': 'тут название', 'description': 'тут описание'}]}"
+
+        return prompt

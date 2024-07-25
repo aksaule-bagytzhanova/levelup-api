@@ -1,11 +1,12 @@
 import json
 from django.conf import settings
+from django.db import transaction
 import requests
 from rest_framework import serializers
 from openai import OpenAI
 
-from .models import Star, StarFood, StarSport, Suggestion, Recommendation, Food
-from apps.suggestions.prompt import ChatGPTRequestTemplate, ChatGPTRecommendationRequestTemplate
+from .models import ProfileSport, Star, StarFood, StarSport, Suggestion, Recommendation, Food
+from apps.suggestions.prompt import ChatGPTProfileSportRequestTemplate, ChatGPTRequestTemplate, ChatGPTRecommendationRequestTemplate
 
 class SuggestionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -201,3 +202,67 @@ class StarSportSerializer(serializers.ModelSerializer):
         if obj.photo and request:
             return request.build_absolute_uri(obj.photo.url)
         return None
+
+
+class ProfileSportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProfileSport
+        fields = '__all__'
+
+
+class ProfileSportCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProfileSport
+        fields = []
+
+    def create(self, validated_data):
+        profile = self.context['request'].user.profile
+        data = self.generate_data(profile)
+        
+        created_instances = []
+        with transaction.atomic():
+            for part, exercises in data.items():
+                for exercise in exercises:
+                    profile_sport = ProfileSport(
+                        profile=profile,
+                        fitness_body_part_type=part,
+                        title=exercise['title'],
+                        description=exercise['description'],
+                        photo=None,
+                        video_url=None
+                    )
+                    profile_sport.save()
+                    created_instances.append(profile_sport)
+        
+        return created_instances
+    
+
+    def generate_data(self, profile):
+        # Формируем запрос на основе типа рекомендации
+        prompt = ChatGPTProfileSportRequestTemplate.generate_request(profile)
+
+        # Генерация текста через ChatGPT
+        generated_text = self.generate_gatgpt_text(prompt)
+        generated_text = generated_text.replace("'", '"')
+
+        data = json.loads(generated_text)
+
+        return data
+
+    def generate_gatgpt_text(self, prompt):
+        # Отправляем запрос к ChatGPT API
+        client = OpenAI(api_key=settings.OPENAI_API_KEY)
+        completion = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "user", "content": prompt}
+            ]
+        )
+
+        generated_text = completion.choices[0].message.content
+        return generated_text
+
+class ProfileSportSaveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProfileSport
+        fields = ['is_saved']

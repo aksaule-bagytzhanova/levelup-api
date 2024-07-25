@@ -4,8 +4,8 @@ from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .models import Star, StarFood, StarSport, Suggestion, Recommendation
-from .serializers import StarFoodSerializer, StarSerializer, StarSportSerializer, SuggestionSerializer, SuggestionCreateSerializer, SuggestionSaveSerializer, RecommendationSerializer, RecommendationCreateSerializer
+from .models import Star, StarFood, StarSport, Suggestion, Recommendation, ProfileSport
+from .serializers import ProfileSportCreateSerializer, ProfileSportSaveSerializer, ProfileSportSerializer, StarFoodSerializer, StarSerializer, StarSportSerializer, SuggestionSerializer, SuggestionCreateSerializer, SuggestionSaveSerializer, RecommendationSerializer, RecommendationCreateSerializer
 
 class SuggestionViewSet(viewsets.ModelViewSet):
     queryset = Suggestion.objects.all()
@@ -98,3 +98,49 @@ class StarFoodViewSet(viewsets.ModelViewSet):
 class StarSportViewSet(viewsets.ModelViewSet):
     queryset = StarSport.objects.all()
     serializer_class = StarSportSerializer
+
+class ProfileSportViewSet(viewsets.ModelViewSet):
+    queryset = ProfileSport.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return ProfileSportCreateSerializer
+        elif self.action == 'save_profile_sport':
+            return ProfileSportSaveSerializer
+        return ProfileSportSerializer
+
+    def get_queryset(self):
+        queryset = ProfileSport.objects.filter(profile__user=self.request.user).order_by('-created_at')
+
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        parts = ["hand", "leg", "back", "chest", "press"]
+        result = []
+        for part in parts:
+            part_queryset = self.queryset.filter(fitness_body_part_type=part)[:3]
+            result.extend(part_queryset)
+        serializer = self.get_serializer(result, many=True)
+        return Response(serializer.data)
+    
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        created_sports = serializer.save()
+        output_serializer = ProfileSportSerializer(created_sports, many=True)
+        return Response(output_serializer.data, status=status.HTTP_201_CREATED)
+
+    @action(detail=False, methods=['get'])
+    def saved(self, request):
+        queryset = self.get_queryset().filter(is_saved=True)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['post'])
+    def save_profile_sport(self, request, pk=None):
+        profile_sport = self.get_object()
+        serializer = self.get_serializer(profile_sport, data={'is_saved': True}, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'status': 'profile sport saved'})
