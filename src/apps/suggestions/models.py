@@ -80,9 +80,9 @@ class ProfileSport(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     fitness_body_part_type = models.CharField(max_length=52, choices=FitnessBodyPartChoices.choices)
     title = models.CharField(max_length=200)
-    photo = models.ImageField(upload_to='profile_sports/')
+    photo = models.ImageField(upload_to='profile_sports/', null=True, blank=True)
     description = models.TextField()
-    video_url = models.URLField()
+    video_url = models.URLField(null=True, blank=True)
 
     def __str__(self) -> str:
         return f"{str(self.profile)} - {self.fitness_body_part_type} - {self.title}"
