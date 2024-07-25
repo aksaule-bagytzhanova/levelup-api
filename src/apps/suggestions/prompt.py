@@ -46,6 +46,7 @@ class ChatGPTRecommendationRequestTemplate:
                 f"цель веса: {profile.ideal_weight}" \
                 f"цель: {profile.get_target_display()}" \
                 f"аллергии: {profile.allergy if profile.allergy else 'Нет'}" \
+                f"title и description и recipe должны быть на казахском языке." \
                 f"ответь строго в таком формате без других слов:" \
                 "{'breakfast': {'title': 'тут название','description': 'тут инфо про калории\n жиры\n белок\n углеводы','recipe': 'тут инфо про состав с заголовками и рецепт учитывай количество и пиши на разные линии'},'lunch': {'title': 'тут название','description': 'тут инфо про калории\n жиры\n белок\n углеводы','recipe': 'тут инфо про состав с заголовками и рецепт учитывай количество и пиши на разные линии'},'dinner': {'title': 'тут название','description': 'тут инфо про калории\n жиры\n белок\n углеводы','recipe': 'тут инфо про состав с заголовками и рецепт учитывай количество и пиши на разные линии'}}"
 
@@ -66,7 +67,8 @@ class ChatGPTProfileSportRequestTemplate:
                 f"мои травмы: {profile.injuries if profile.injuries else 'Нет'}" \
                 f"хочу добиться за срок: {profile.get_time_limit_display}." \
                 f"по каждому типу нужно 3 упражений." \
+                f"title и description должны быть на казахском языке." \
                 f"ответь строго в таком формате без других слов:" \
-                "{'back': [{'title': 'тут название', 'description': 'тут описание'}],'hand': [{'title': 'тут название', 'description': 'тут описание'}], 'leg': [{'title': 'тут название', 'description': 'тут описание'}], 'chest': [{'title': 'тут название', 'description': 'тут описание'}], 'press': [{'title': 'тут название', 'description': 'тут описание'}], 'chest': [{'title': 'тут название', 'description': 'тут описание'}]}"
+                "{'back': [{'title': 'тут название', 'description': 'тут детальное описание'}],'hand': [{'title': 'тут название', 'description': 'тут детальное описание'}], 'leg': [{'title': 'тут название', 'description': 'тут детальное описание'}], 'chest': [{'title': 'тут название', 'description': 'тут детальное описание'}], 'press': [{'title': 'тут название', 'description': 'тут детальное описание'}]}"
 
         return prompt
