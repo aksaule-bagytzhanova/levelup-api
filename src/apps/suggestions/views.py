@@ -124,6 +124,12 @@ class ProfileSportViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(result, many=True)
         return Response(serializer.data)
     
+    def retrieve(self, request, pk=None):
+        profile_sport = self.get_object()
+        serializer = ProfileSportSerializer(profile_sport)
+        return Response(serializer.data)
+
+    
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
