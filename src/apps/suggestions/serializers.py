@@ -156,6 +156,7 @@ class RecommendationCreateSerializer(serializers.ModelSerializer):
 
         # Генерация текста через ChatGPT
         generated_text = self.generate_gatgpt_text(prompt)
+        print(generated_text)
         generated_text = generated_text.replace("'", '"')
 
         data = json.loads(generated_text)
