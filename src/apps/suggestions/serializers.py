@@ -5,8 +5,13 @@ import requests
 from rest_framework import serializers
 from openai import OpenAI
 
+import logging
+
 from .models import ProfileSport, Star, StarFood, StarSport, Suggestion, Recommendation, Food
 from apps.suggestions.prompt import ChatGPTProfileSportRequestTemplate, ChatGPTRequestTemplate, ChatGPTRecommendationRequestTemplate
+
+logger = logging.getLogger(__name__)
+
 
 class SuggestionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -153,11 +158,20 @@ class RecommendationCreateSerializer(serializers.ModelSerializer):
     def generate_data(self, profile):
         # Формируем запрос на основе типа рекомендации
         prompt = ChatGPTRecommendationRequestTemplate.generate_request(profile)
+        logger.info(prompt)
+
+        logger.info("...")
+        logger.info("...")
+        logger.info("...")
 
         # Генерация текста через ChatGPT
         generated_text = self.generate_gatgpt_text(prompt)
-        print(generated_text)
+        logger.info(generated_text)
         generated_text = generated_text.replace("'", '"')
+
+        logger.info("...")
+        logger.info("...")
+        logger.info("...")
 
         data = json.loads(generated_text)
 
