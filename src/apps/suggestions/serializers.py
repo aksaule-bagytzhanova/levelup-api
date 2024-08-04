@@ -86,7 +86,7 @@ class SuggestionCreateSerializer(serializers.ModelSerializer):
         # Отправляем запрос к ChatGPT API
         client = OpenAI(api_key=settings.OPENAI_API_KEY)
         completion = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o-mini",
             messages=[
                 {"role": "user", "content": prompt}
             ]
@@ -257,7 +257,7 @@ class ProfileSportCreateSerializer(serializers.ModelSerializer):
         # Отправляем запрос к ChatGPT API
         client = OpenAI(api_key=settings.OPENAI_API_KEY)
         completion = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o-mini",
             messages=[
                 {"role": "user", "content": prompt}
             ]

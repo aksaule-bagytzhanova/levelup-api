@@ -58,17 +58,17 @@ class ChatGPTProfileSportRequestTemplate:
     def generate_request(profile):
         prompt = f"Сделай мне список тренировок от фитнес инструктора:" \
                 f"Вот мои данные:" \
-                f"дата рождения: {profile.date_of_birth}" \
-                f"рост: {profile.height}" \
-                f"вес: {profile.weight}" \
-                f"цель веса: {profile.ideal_weight}" \
-                f"цель: {profile.get_target_display()}" \
-                f"аллергии: {profile.allergy if profile.allergy else 'Нет'}" \
-                f"мои травмы: {profile.injuries if profile.injuries else 'Нет'}" \
+                f"дата рождения: {profile.date_of_birth}," \
+                f"рост: {profile.height}," \
+                f"вес: {profile.weight}," \
+                f"цель веса: {profile.ideal_weight}," \
+                f"цель: {profile.get_target_display()}," \
+                f"аллергии: {profile.allergy if profile.allergy else 'Нет'}," \
+                f"мои травмы: {profile.injuries if profile.injuries else 'Нет'}," \
                 f"хочу добиться за срок: {profile.get_time_limit_display}." \
-                f"по каждому типу нужно 3 упражений." \
-                f"title и description должны быть на русском языке." \
-                f"ответь строго в таком формате без других слов:" \
+                f"По каждому типу нужно 3 упражений." \
+                f"все должно быть на казахском языке кроме ключевых слов json." \
+                f"Ответь строго в таком формате без других слов:" \
                 "{'back': [{'title': 'тут название', 'description': 'тут детальное описание'}],'hand': [{'title': 'тут название', 'description': 'тут детальное описание'}], 'leg': [{'title': 'тут название', 'description': 'тут детальное описание'}], 'chest': [{'title': 'тут название', 'description': 'тут детальное описание'}], 'press': [{'title': 'тут название', 'description': 'тут детальное описание'}]}"
 
         return prompt
