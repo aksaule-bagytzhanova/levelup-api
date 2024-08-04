@@ -181,7 +181,7 @@ class RecommendationCreateSerializer(serializers.ModelSerializer):
         # Отправляем запрос к ChatGPT API
         client = OpenAI(api_key=settings.OPENAI_API_KEY)
         completion = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-3.5-turbo-0125",
             messages=[
                 {"role": "user", "content": prompt}
             ]
