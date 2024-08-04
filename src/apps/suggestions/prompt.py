@@ -40,14 +40,14 @@ class ChatGPTRecommendationRequestTemplate:
     def generate_request(profile):
         prompt = f"Сделай мне план питания от нутрициолога:" \
                 f"Вот мои данные:" \
-                f"дата рождения: {profile.date_of_birth}" \
-                f"рост: {profile.height}" \
-                f"вес: {profile.weight}" \
-                f"цель веса: {profile.ideal_weight}" \
-                f"цель: {profile.get_target_display()}" \
-                f"аллергии: {profile.allergy if profile.allergy else 'Нет'}" \
-                f"title и description и recipe должны быть на русском языке." \
-                f"ответь строго в таком формате без других слов:" \
+                f"дата рождения: {profile.date_of_birth}," \
+                f"рост: {profile.height}," \
+                f"вес: {profile.weight}," \
+                f"цель веса: {profile.ideal_weight}," \
+                f"цель: {profile.get_target_display()}," \
+                f"аллергии: {profile.allergy if profile.allergy else 'Нет'}," \
+                f"все должно быть на казахском языке кроме ключевых слов json." \
+                f"Ответь строго в таком формате без других слов:" \
                 "{'breakfast': {'title': 'тут название','description': 'тут инфо про калории\n жиры\n белок\n углеводы','recipe': 'тут инфо про состав с заголовками и рецепт учитывай количество и пиши на разные линии'},'lunch': {'title': 'тут название','description': 'тут инфо про калории\n жиры\n белок\n углеводы','recipe': 'тут инфо про состав с заголовками и рецепт учитывай количество и пиши на разные линии'},'dinner': {'title': 'тут название','description': 'тут инфо про калории\n жиры\n белок\n углеводы','recipe': 'тут инфо про состав с заголовками и рецепт учитывай количество и пиши на разные линии'}}"
 
         return prompt

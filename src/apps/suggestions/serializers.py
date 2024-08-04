@@ -158,20 +158,9 @@ class RecommendationCreateSerializer(serializers.ModelSerializer):
     def generate_data(self, profile):
         # Формируем запрос на основе типа рекомендации
         prompt = ChatGPTRecommendationRequestTemplate.generate_request(profile)
-        logger.info(prompt)
-
-        logger.info("...")
-        logger.info("...")
-        logger.info("...")
-
         # Генерация текста через ChatGPT
         generated_text = self.generate_gatgpt_text(prompt)
-        logger.info(generated_text)
         generated_text = generated_text.replace("'", '"')
-
-        logger.info("...")
-        logger.info("...")
-        logger.info("...")
 
         data = json.loads(generated_text)
 
@@ -181,7 +170,7 @@ class RecommendationCreateSerializer(serializers.ModelSerializer):
         # Отправляем запрос к ChatGPT API
         client = OpenAI(api_key=settings.OPENAI_API_KEY)
         completion = client.chat.completions.create(
-            model="gpt-3.5-turbo-0125",
+            model="gpt-4o-mini",
             messages=[
                 {"role": "user", "content": prompt}
             ]
