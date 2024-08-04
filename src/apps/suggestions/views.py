@@ -119,7 +119,7 @@ class ProfileSportViewSet(viewsets.ModelViewSet):
         parts = ["hand", "leg", "back", "chest", "press"]
         result = []
         for part in parts:
-            part_queryset = self.queryset.filter(fitness_body_part_type=part)[:3]
+            part_queryset = self.get_queryset().filter(fitness_body_part_type=part)[:3]
             result.extend(part_queryset)
         serializer = self.get_serializer(result, many=True)
         return Response(serializer.data)
